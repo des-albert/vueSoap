@@ -18,7 +18,7 @@
       >
         <ul class="navbar-nav mr-auto">
           <li>
-            <img src="@/assets/Cray_Logo.png">
+            <img src="./assets/Cray_HPE_small.png">
           </li>
           <li class="nav-item">
             <router-link
@@ -52,7 +52,12 @@
                 to="/login"
                 class="nav-link"
               >
-                Current User: {{ $store.getters.user }}
+                <div v-if="$store.getters.user.includes('failed')">
+                  <span class="blinking"> {{ $store.getters.user }} </span>
+                </div>
+                <div v-else>
+                  Current User: {{ $store.getters.user }}
+                </div>
               </router-link>
             </li>
           </div>
@@ -109,5 +114,16 @@ export default {
     100% {
       transform: scale(1);
     }
+  }
+  .blinking{
+    animation:blinkingText 0.8s infinite;
+  }
+
+  @keyframes blinkingText{
+    0%{     color: #000;    }
+    49%{    color: transparent; }
+    50%{    color: transparent; }
+    99%{    color: transparent;  }
+    100%{   color: #000;    }
   }
 </style>

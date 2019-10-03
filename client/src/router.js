@@ -7,7 +7,7 @@ import axios from 'axios';
 import LoginComponent from '@/components/users/LoginComponent.vue';
 import ExceptionComponent from '@/components/exception/IndexComponent.vue';
 import SopsComponent from '@/components/opportunity/IndexComponent.vue';
-import AboutComponent from './views/About.vue';
+import AboutComponent from '@/views/About.vue';
 
 Vue.use(Router);
 Vue.use(VueAxios, axios);

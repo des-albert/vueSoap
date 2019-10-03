@@ -80,6 +80,7 @@ export default {
           this.$router.push( {name : 'exceptions' });
         })
         .catch( () => {
+          this.$store.commit('change', 'Salesforce Login failed');
         });
     }
   }

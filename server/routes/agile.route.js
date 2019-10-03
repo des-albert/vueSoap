@@ -49,32 +49,37 @@ agileRoute.route('/').get((req, res) => {
     let security = new soap.BasicAuthSecurity(agileUser.agileName, agileUser.password);
     let tasks = cacheProvider.instance().get('taskKey');
 
-    let promises = [];
-    for (let i = 0; i < tasks.length; i++) {
-      const change = tasks[i].Exception_Agile_ECO_MCO__c;
+    if (tasks.length > 0) {
+      let promises = [];
+      for (let i = 0; i < tasks.length; i++) {
+        const change = tasks[i].Exception_Agile_ECO_MCO__c;
 
-      if (change != null) {
-        promises.push(getChangeStaus(change, security));
-      }
-    }
-
-    Promise.all(promises)
-      .then((values) => {
-        for (let i = 0; i < tasks.length; i++) {
-          tasks[i]['ECO_MCO_status'] = values[i];
+        if (change != null) {
+          promises.push(getChangeStaus(change, security));
         }
-        cacheProvider.instance().set('taskKey', tasks, (err) => {
-          if (err) {
-            res.status(400).json('Agile Status Task save error');
-          } else {
-            res.status(200).json('Agile Status added to Task');
-          }
-        });
+      }
 
-      })
-      .catch(err => {
-        console.log('getStatus error ' + err);
-      });
+      Promise.all(promises)
+        .then((values) => {
+          for (let i = 0; i < tasks.length; i++) {
+            tasks[i]['ECO_MCO_status'] = values[i];
+          }
+          cacheProvider.instance().set('taskKey', tasks, (err) => {
+            if (err) {
+              res.status(400).json('Agile Status Task save error');
+            } else {
+              res.status(200).json('Agile Status added to Task');
+            }
+          });
+
+        })
+        .catch(err => {
+          console.log('getStatus error ' + err);
+        });
+    }
+    else {
+      res.status(200).json('No Exception Tasks');
+    }
   }
 });
 
